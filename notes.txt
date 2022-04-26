@@ -1,0 +1,1 @@
+sudo kubectl port-forward svc/kube-dns -n kube-system 53:53 &
