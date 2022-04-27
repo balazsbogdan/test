@@ -1,1 +1,21 @@
 sudo kubectl port-forward svc/kube-dns -n kube-system 53:53 &
+ip link
+ip route
+iptables --list-rules
+iptables -N ROOT_NS
+
+
+ip -6 link add vxlan100 type vxlan \
+  id 100 \
+  dstport 4789 \
+  local 2001:db8:1::1 \
+  group ff05::100 \
+  dev eth0 \
+  ttl 5
+brctl addbr br100
+brctl addif br100 vxlan100
+brctl addif br100 vnet22
+brctl addif br100 vnet25
+brctl stp br100 off
+ip link set up dev br100
+ip link set up dev vxlan100
